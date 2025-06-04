@@ -153,7 +153,17 @@ DATABASES = {
 }
 # Make sure DATABASE_URL is set in your environment (Render dashboard).
 
-# --- Cloudinary Storage Switch ---
+# --- Static and Media Files ---
+STATIC_URL = config('STATIC_URL', default='/static/')
+MEDIA_URL = config('MEDIA_URL', default='/media/')
+STATIC_ROOT = config('STATIC_ROOT', default=os.path.join(BASE_DIR, 'staticfiles'))
+MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'))
+
+# Always include the top-level static directory for collectstatic
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 USE_CLOUDINARY = config('USE_CLOUDINARY', default=True, cast=bool)
 if USE_CLOUDINARY:
     CLOUDINARY_STORAGE = {
@@ -162,25 +172,16 @@ if USE_CLOUDINARY:
         'API_SECRET': config('API_SECRET'),
     }
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    if not DEBUG:
+        STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+    else:
+        STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 else:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
-# --- Static and Media Files ---
-STATIC_URL = config('STATIC_URL', default='/static/')
-MEDIA_URL = config('MEDIA_URL', default='/media/')
-STATIC_ROOT = config('STATIC_ROOT', default=os.path.join(BASE_DIR, 'staticfiles'))
-MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'))
-
-if DEBUG:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'portfolio/static/')]
-else:
-    # Use hashed storage for production
-    STATICFILES_STORAGE = (
-        'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-        if USE_CLOUDINARY
-        else 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    )
+    if not DEBUG:
+        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    else:
+        STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
