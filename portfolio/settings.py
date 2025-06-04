@@ -37,7 +37,7 @@ DJANGO_ADMIN_URL = config('DJANGO_ADMIN_URL', default='admin/')
 
 # --- Custom App Settings ---
 FEATURE_X_ENABLED = config('FEATURE_X_ENABLED', default=False, cast=bool)
-SITE_TITLE = config('SITE_TITLE', default='My Dev Portfolio')
+SITE_TITLE = config('SITE_TITLE', default='Himanshu-Lodhi-Portfolio')
 
 # --- REST Framework  ---
 REST_FRAMEWORK = {
@@ -55,8 +55,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': config('PAGINATION_PAGE_SIZE', default=10, cast=int),
 }
 
-# --- Sentry  ---
-SENTRY_DSN = config('SENTRY_DSN', default='')
 
 LOGIN_URL = '/dashboard/login/'
 LOGOUT_URL = '/dashboard/logout/'
@@ -88,6 +86,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+ALLOWED_HOSTS = [
+    '.onrender.com'
+    ]
 
 CKEDITOR_5_CONFIGS = {
     "default": {
