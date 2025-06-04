@@ -1,0 +1,204 @@
+import os
+from decouple import config, Csv
+import dj_database_url
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# --- Core Django Settings ---
+SECRET_KEY = config('SECRET_KEY', default='changeme-in-prod')
+DEBUG = config('DEBUG', default=False, cast=bool)
+ENV = config('ENV', default='development')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+
+# --- CORS settings ---
+CORS_ORIGIN_ALLOW_ALL = config('CORS_ORIGIN_ALLOW_ALL', default=DEBUG, cast=bool)
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())
+# If CORS_ORIGIN_ALLOW_ALL is True, CORS_ALLOWED_ORIGINS is ignored.
+
+# --- CSRF Trusted Origins ---
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost,http://127.0.0.1', cast=Csv())
+
+# --- Security ---
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
+
+# --- Logging ---
+LOG_LEVEL = config('LOG_LEVEL', default='INFO')
+
+# --- Timezone and Localization ---
+TIME_ZONE = config('TIME_ZONE', default='UTC')
+LANGUAGE_CODE = config('LANGUAGE_CODE', default='en-us')
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+# --- Admin URL ---
+DJANGO_ADMIN_URL = config('DJANGO_ADMIN_URL', default='admin/')
+
+# --- Custom App Settings ---
+FEATURE_X_ENABLED = config('FEATURE_X_ENABLED', default=False, cast=bool)
+SITE_TITLE = config('SITE_TITLE', default='My Dev Portfolio')
+
+# --- REST Framework  ---
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        config('REST_FRAMEWORK_DEFAULT_PERMISSION_CLASSES', default='rest_framework.permissions.IsAuthenticated')
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        cls.strip() for cls in config(
+            'REST_FRAMEWORK_DEFAULT_AUTHENTICATION_CLASSES',
+            default='rest_framework.authentication.SessionAuthentication,rest_framework.authentication.BasicAuthentication'
+        ).split(',')
+    ],
+    # Add these two lines:
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': config('PAGINATION_PAGE_SIZE', default=10, cast=int),
+}
+
+# --- Sentry  ---
+SENTRY_DSN = config('SENTRY_DSN', default='')
+
+LOGIN_URL = '/dashboard/login/'
+LOGOUT_URL = '/dashboard/logout/'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'info',
+    'dashboard',
+    'cloudinary_storage',
+    'cloudinary',
+    'django_ckeditor_5',
+    'rest_framework',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+]
+
+CKEDITOR_5_CONFIGS = {
+    "default": {
+        "toolbar": {
+            "items": [
+                "heading", "|",
+                "bold", "italic", "underline", "strikethrough", "code", "subscript", "superscript", "|",
+                "link", "blockQuote", "codeBlock", "|",
+                "bulletedList", "numberedList", "todoList", "|",
+                "outdent", "indent", "|",
+                "alignment", "|",
+                "imageUpload", "mediaEmbed", "insertTable", "horizontalLine", "pageBreak", "|",
+                "undo", "redo", "|",
+                "fontSize", "fontFamily", "fontColor", "fontBackgroundColor", "|",
+                "highlight", "removeFormat", "|",
+                "specialCharacters", "findAndReplace", "selectAll", "|",
+                "sourceEditing"
+            ],
+            "shouldNotGroupWhenFull": True
+        },
+        "image": {
+            "toolbar": [
+                "imageTextAlternative", "imageStyle:inline", "imageStyle:wrapText",
+                "imageStyle:breakText", "imageStyle:side", "toggleImageCaption"
+            ]
+        },
+        "table": {
+            "contentToolbar": [
+                "tableColumn", "tableRow", "mergeTableCells", "tableCellProperties", "tableProperties"
+            ]
+        },
+        "mediaEmbed": {
+            "previewsInData": True
+        },
+        "language": "en"
+    }
+}
+
+ROOT_URLCONF = 'portfolio.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'libraries': {
+                'filter_tags': 'info.templatetags.filter',
+            }
+        },
+    },
+]
+
+WSGI_APPLICATION = 'portfolio.wsgi.application'
+
+# ---- Database Switch Section ----
+USE_SUPABASE = config('USE_SUPABASE', default=False, cast=bool)
+if USE_SUPABASE:
+    DATABASE_URL = config('SUPABASE_DATABASE_URL')
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
+# --- Cloudinary Storage Switch ---
+USE_CLOUDINARY = config('USE_CLOUDINARY', default=True, cast=bool)
+if USE_CLOUDINARY:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': config('CLOUD_NAME', default='dummy'),
+        'API_KEY': config('API_KEY', default='dummy'),
+        'API_SECRET': config('API_SECRET', default='dummy'),
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+# --- Static and Media Files ---
+STATIC_URL = config('STATIC_URL', default='/static/')
+MEDIA_URL = config('MEDIA_URL', default='/media/')
+STATIC_ROOT = config('STATIC_ROOT', default=os.path.join(BASE_DIR, 'staticfiles'))
+MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'))
+
+if DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'portfolio/static/')]
+else:
+    # Use hashed storage for production
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage' if USE_CLOUDINARY else 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
