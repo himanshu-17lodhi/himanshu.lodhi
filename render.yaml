@@ -17,9 +17,7 @@ services:
         sync: false
       - key: ENV
         sync: false
-      - key: USE_SUPABASE
-        sync: false
-      - key: SUPABASE_DATABASE_URL
+      - key: DATABASE_URL           
         sync: false
       - key: USE_CLOUDINARY
         sync: false
