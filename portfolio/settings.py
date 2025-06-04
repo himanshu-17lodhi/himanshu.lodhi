@@ -146,20 +146,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
-# ---- Database Switch Section ----
-USE_SUPABASE = config('USE_SUPABASE', default=True, cast=bool)
-if USE_SUPABASE:
-    DATABASE_URL = config('SUPABASE_DATABASE_URL')
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+# ---- Use ONLY Render Postgres Database ----
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+}
+# Make sure DATABASE_URL is set in your environment (Render dashboard).
 
 # --- Cloudinary Storage Switch ---
 USE_CLOUDINARY = config('USE_CLOUDINARY', default=True, cast=bool)
