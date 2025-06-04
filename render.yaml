@@ -8,4 +8,4 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: portfolio.settings
       - key: DATABASE_URL
-        value: postgresql://postgres:M7bR2xN9fT4cVaL8@db.yourinstance.supabase.co:5432/postgres
+        value: postgresql://postgres:M7bR2xN9fT4cVaL8@db.jsqowzgowsvwspanucfm.supabase.co:5432/postgres
