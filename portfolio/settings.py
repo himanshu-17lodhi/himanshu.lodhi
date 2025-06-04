@@ -5,10 +5,10 @@ import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # --- Core Django Settings ---
-SECRET_KEY = config('SECRET_KEY', default='changeme-in-prod')
+SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 ENV = config('ENV', default='development')
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.onrender.com', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # --- CORS settings ---
 CORS_ORIGIN_ALLOW_ALL = config('CORS_ORIGIN_ALLOW_ALL', default=DEBUG, cast=bool)
@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_ckeditor_5',
     'rest_framework',
+    # Add any other apps here
 ]
 
 MIDDLEWARE = [
