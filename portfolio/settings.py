@@ -8,19 +8,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY', default='changeme-in-prod')
 DEBUG = config('DEBUG', default=False, cast=bool)
 ENV = config('ENV', default='development')
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.onrender.com', cast=Csv())
 
 # --- CORS settings ---
 CORS_ORIGIN_ALLOW_ALL = config('CORS_ORIGIN_ALLOW_ALL', default=DEBUG, cast=bool)
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())
-# If CORS_ORIGIN_ALLOW_ALL is True, CORS_ALLOWED_ORIGINS is ignored.
 
 # --- CSRF Trusted Origins ---
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost,http://127.0.0.1', cast=Csv())
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
 # --- Security ---
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=not DEBUG, cast=bool)
 
 # --- Logging ---
 LOG_LEVEL = config('LOG_LEVEL', default='INFO')
@@ -50,11 +51,9 @@ REST_FRAMEWORK = {
             default='rest_framework.authentication.SessionAuthentication,rest_framework.authentication.BasicAuthentication'
         ).split(',')
     ],
-    # Add these two lines:
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': config('PAGINATION_PAGE_SIZE', default=10, cast=int),
 }
-
 
 LOGIN_URL = '/dashboard/login/'
 LOGOUT_URL = '/dashboard/logout/'
@@ -78,18 +77,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
-ALLOWED_HOSTS = [
-    '.onrender.com'
-    ]
 
 CKEDITOR_5_CONFIGS = {
     "default": {
@@ -152,11 +147,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # ---- Database Switch Section ----
-USE_SUPABASE = config('USE_SUPABASE', default=False, cast=bool)
+USE_SUPABASE = config('USE_SUPABASE', default=True, cast=bool)
 if USE_SUPABASE:
     DATABASE_URL = config('SUPABASE_DATABASE_URL')
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
     DATABASES = {
@@ -170,9 +165,9 @@ else:
 USE_CLOUDINARY = config('USE_CLOUDINARY', default=True, cast=bool)
 if USE_CLOUDINARY:
     CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': config('CLOUD_NAME', default='dummy'),
-        'API_KEY': config('API_KEY', default='dummy'),
-        'API_SECRET': config('API_SECRET', default='dummy'),
+        'CLOUD_NAME': config('CLOUD_NAME'),
+        'API_KEY': config('API_KEY'),
+        'API_SECRET': config('API_SECRET'),
     }
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
@@ -189,7 +184,11 @@ if DEBUG:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'portfolio/static/')]
 else:
     # Use hashed storage for production
-    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage' if USE_CLOUDINARY else 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = (
+        'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+        if USE_CLOUDINARY
+        else 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    )
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
