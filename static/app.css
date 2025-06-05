@@ -109,30 +109,6 @@ hr {
         font-size: 30px;
     }
   }
-<<<<<<< HEAD
-=======
-@keyframes animate {
-    30%{
-        content: 'Abdelaali ES SALMI';
-        opacity: 1;
-    }
-    45%{
-        opacity: 0;
-    }
-    65%{
-        content: 'Programmer';
-        opacity: 1;
-        
-    }
-    70%{
-        opacity: 0;
-    }
-    80%{
-        content: 'Full Stack Developer';
-        opacity: 1;
-    }
-}
->>>>>>> origin/main
 
 /* ScrolDown */
 @keyframes scrollDown {
@@ -488,9 +464,7 @@ hr {
     }
   }
 
-
-
-  .project-card {
+.project-card {
     /* background-color: var(--secondary); */
     border: none;
     border-bottom-left-radius: 10px;
@@ -644,9 +618,6 @@ hr {
         font-size: 40px;
     }
 }
-
-
-/**/
   ::-webkit-scrollbar{
     width: 8px;
 }
@@ -657,7 +628,6 @@ hr {
   background-color: var(--scolor);
   /* border-radius: 10px; */
 }
-/**/
 
 .footer {
     color: var(--color);
@@ -799,7 +769,4 @@ hr {
     background-color: #077c42;
     color: var(--color);
 }
-
-
-
 /* login page */
