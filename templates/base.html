@@ -17,17 +17,14 @@
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
 
-
         <!-- Argon CSS -->
         <link type="text/css" href="{% static 'css/argon-design-system.min.css' %}" rel="stylesheet">
 
-        <!-- Costom CSS -->
+        <!-- Custom CSS -->
         <link type="text/css" href="{% static 'app.css' %}" rel="stylesheet">
         <link type="text/css" href="{% static 'animation.css' %}" rel="stylesheet">
-        
         <link type="text/css" href="{% static 'slider.css' %}" rel="stylesheet">
         {% block style %}{% endblock style %}
-
     </head>
     <body>
         {% block body %}
@@ -49,44 +46,41 @@
                 <hr>
                 <div class="row pb-3 footer">
                     <div class="col-12 text-center py-3">
-    <div class="mb-1">&copy; {% now "Y" %} Himanshu Lodhi. All rights reserved.</div>
-    <div>
-        Built with <i class="fa fa-heart text-danger"></i> & Django by 
-        <a href="https://github.com/himanshu-17lodhi" target="_blank" class="text-decoration-none fw-semibold">Himanshu Lodhi</a>
-    </div>
-</div>
-
+                        <div class="mb-1">&copy; {% now "Y" %} Himanshu Lodhi. All rights reserved.</div>
+                        <div>
+                            Built with <i class="fa fa-heart text-danger"></i> & Django by 
+                            <a href="https://github.com/himanshu-17lodhi" target="_blank" class="text-decoration-none fw-semibold">Himanshu Lodhi</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         {% endblock body %}
 
-        <!-- Core -->
+        <!-- Core JS -->
         <script src="{% static 'js/core/jquery.min.js' %}"></script>
         <script src="{% static 'js/core/popper.min.js' %}"></script>
         <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
 
         <!-- Optional plugins -->
-
         <!-- Argon JS -->
         <script src="{% static 'js/argon-design-system.js' %}"></script>
 
         <script src='https://www.google.com/recaptcha/api.js'></script>
 
         <!-- stats.js lib --> 
-        <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> 
-        <script src="{% static "animation.js" %}"></script>
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> 
+        <script src="{% static 'animation.js' %}"></script>
 
-        <!-- Costom JS-->
-        <script src='https://cdn.tiny.cloud/1/d50e95ysaxzxlmnygzozwpoz6icwcj5yb9bezny21nx6k8tv/tinymce/5/tinymce.min.js' referrerpolicy="origin">
-        </script>
+        <!-- Custom JS-->
+        <script src='https://cdn.tiny.cloud/1/d50e95ysaxzxlmnygzozwpoz6icwcj5yb9bezny21nx6k8tv/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
         <script>
             tinymce.init({
-            selector: '#form-description',
-            setup: function (editor) {
-                editor.on('change', function () {
-                    editor.save();
-                });
-            }
+                selector: '#form-description',
+                setup: function (editor) {
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                }
             });
         </script>
         <script src="{% static 'app.js' %}"></script>
@@ -94,16 +88,16 @@
             var btn = $('#Back-to-top-button');
 
             $(window).scroll(function() {
-            if ($(window).scrollTop() > 300) {
-                btn.addClass('show');
-            } else {
-                btn.removeClass('show');
-            }
+                if ($(window).scrollTop() > 300) {
+                    btn.addClass('show');
+                } else {
+                    btn.removeClass('show');
+                }
             });
 
             btn.on('click', function(e) {
-            e.preventDefault();
-            $('html, body').animate({scrollTop:0}, '300');
+                e.preventDefault();
+                $('html, body').animate({scrollTop:0}, '300');
             });
         </script>
         {% block script %}
