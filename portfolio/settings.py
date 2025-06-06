@@ -73,7 +73,6 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_ckeditor_5',
     'rest_framework',
-    # Add any other apps here
 ]
 
 MIDDLEWARE = [
