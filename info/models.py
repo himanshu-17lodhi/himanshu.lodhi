@@ -1,6 +1,7 @@
 from django.db import models
 import re
 from django_ckeditor_5.fields import CKEditor5Field
+from django.core.exceptions import ValidationError
 
 
 class Information(models.Model):
@@ -24,10 +25,24 @@ class Information(models.Model):
     def __str__(self):
         return self.name_complete
 
+def validate_image_file_extension(value):
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
+    import os
+    ext = os.path.splitext(value.name)[1].lower()
+    if ext not in valid_extensions:
+        raise ValidationError('Unsupported file extension. Allowed: jpg, jpeg, png, gif, svg.')
+
+
 class Competence(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
     description = models.TextField(blank=False, null=False)
-    image = models.FileField(upload_to='competence/', blank=False, null=False)
+    image = models.FileField(
+        upload_to='competence/',
+        blank=False,
+        null=False,
+        validators=[validate_image_file_extension],
+        verbose_name="Image or SVG"
+    )
 
     def __str__(self):
         return self.title
