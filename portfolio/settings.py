@@ -177,34 +177,18 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-USE_CLOUDINARY = config('USE_CLOUDINARY', default=(ENV == 'production'), cast=bool)
-if USE_CLOUDINARY:
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': config('CLOUD_NAME'),
-        'API_KEY': config('API_KEY'),
-        'API_SECRET': config('API_SECRET'),
-    }
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    if not DEBUG:
-        STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-    else:
-        STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-else:
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    if not DEBUG:
-        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    else:
-        STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET'),
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# --- DEBUG PRINTS for diagnosis ---
-print("\n=== DJANGO STORAGE SETTINGS DEBUG ===")
-print("ENV =", ENV)
-print("DEBUG =", DEBUG)
-print("USE_CLOUDINARY =", USE_CLOUDINARY)
-print("DEFAULT_FILE_STORAGE =", DEFAULT_FILE_STORAGE)
-print("STATICFILES_STORAGE =", STATICFILES_STORAGE)
-print("CLOUDINARY_STORAGE =", CLOUDINARY_STORAGE if 'CLOUDINARY_STORAGE' in locals() else 'NOT SET')
-print("=====================================\n")
+# --- Static files storage ---
+if not DEBUG:
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+else:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
