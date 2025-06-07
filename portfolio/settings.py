@@ -4,6 +4,11 @@ import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+print("USE_CLOUDINARY =", USE_CLOUDINARY)
+print("DEFAULT_FILE_STORAGE =", DEFAULT_FILE_STORAGE)
+print("CLOUDINARY_STORAGE =", CLOUDINARY_STORAGE if 'CLOUDINARY_STORAGE' in globals() else 'NOT SET')
+
 # --- Core Django Settings ---
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
