@@ -4,32 +4,32 @@ import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-print("USE_CLOUDINARY =", USE_CLOUDINARY)
-print("DEFAULT_FILE_STORAGE =", DEFAULT_FILE_STORAGE)
-print("CLOUDINARY_STORAGE =", CLOUDINARY_STORAGE if 'CLOUDINARY_STORAGE' in globals() else 'NOT SET')
-
 # --- Core Django Settings ---
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 ENV = config('ENV', default='development')
-ALLOWED_HOSTS = ['.onrender.com']
+
+# --- Hosts ---
+if ENV == 'production':
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.onrender.com', cast=Csv())
+    CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
+    CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())
+else:
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+    CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost,http://127.0.0.1', cast=Csv())
+    CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost,http://127.0.0.1', cast=Csv())
 
 # --- CORS settings ---
 CORS_ORIGIN_ALLOW_ALL = config('CORS_ORIGIN_ALLOW_ALL', default=DEBUG, cast=bool)
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())
-
-# --- CSRF Trusted Origins ---
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
 # --- Security ---
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=not DEBUG, cast=bool)
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=(ENV == 'production'), cast=bool)
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=(ENV == 'production'), cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=(ENV == 'production'), cast=bool)
 
 # --- Logging ---
-LOG_LEVEL = config('LOG_LEVEL', default='INFO')
+LOG_LEVEL = config('LOG_LEVEL', default='INFO' if ENV == 'production' else 'DEBUG')
 
 # --- Timezone and Localization ---
 TIME_ZONE = config('TIME_ZONE', default='UTC')
@@ -48,7 +48,10 @@ SITE_TITLE = config('SITE_TITLE', default='Himanshu-Lodhi-Portfolio')
 # --- REST Framework  ---
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        config('REST_FRAMEWORK_DEFAULT_PERMISSION_CLASSES', default='rest_framework.permissions.IsAuthenticated')
+        config(
+            'REST_FRAMEWORK_DEFAULT_PERMISSION_CLASSES',
+            default=('rest_framework.permissions.IsAuthenticated' if ENV == 'production' else 'rest_framework.permissions.AllowAny')
+        )
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         cls.strip() for cls in config(
@@ -151,11 +154,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
-# ---- Use ONLY Render Postgres Database ----
-DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-}
-# Make sure DATABASE_URL is set in your environment (Render dashboard).
+# ---- Database ----
+if ENV == 'production':
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # --- Static and Media Files ---
 STATIC_URL = config('STATIC_URL', default='/static/')
@@ -163,12 +173,11 @@ MEDIA_URL = config('MEDIA_URL', default='/media/')
 STATIC_ROOT = config('STATIC_ROOT', default=os.path.join(BASE_DIR, 'staticfiles'))
 MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'))
 
-# Always include the top-level static directory for collectstatic
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-USE_CLOUDINARY = config('USE_CLOUDINARY', default=True, cast=bool)
+USE_CLOUDINARY = config('USE_CLOUDINARY', default=(ENV == 'production'), cast=bool)
 if USE_CLOUDINARY:
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': config('CLOUD_NAME'),
@@ -186,6 +195,16 @@ else:
         STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     else:
         STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# --- DEBUG PRINTS for diagnosis ---
+print("\n=== DJANGO STORAGE SETTINGS DEBUG ===")
+print("ENV =", ENV)
+print("DEBUG =", DEBUG)
+print("USE_CLOUDINARY =", USE_CLOUDINARY)
+print("DEFAULT_FILE_STORAGE =", DEFAULT_FILE_STORAGE)
+print("STATICFILES_STORAGE =", STATICFILES_STORAGE)
+print("CLOUDINARY_STORAGE =", CLOUDINARY_STORAGE if 'CLOUDINARY_STORAGE' in locals() else 'NOT SET')
+print("=====================================\n")
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
