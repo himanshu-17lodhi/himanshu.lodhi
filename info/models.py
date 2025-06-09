@@ -52,8 +52,8 @@ class Competence(models.Model):
     description = models.TextField(blank=False, null=False)
     image_from_static = models.CharField(
         max_length=255,
-        blank=False,
-        null=False,
+        blank=True,         
+        null=True,          
         choices=competence_image_choices(),
         verbose_name="Select image from static/competence/"
     )
