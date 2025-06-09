@@ -38,14 +38,34 @@ class Competence(models.Model):
     description = models.TextField(blank=False, null=False)
     image = models.FileField(
         upload_to='competence/',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         validators=[validate_image_file_extension],
-        verbose_name="Image or SVG"
+        verbose_name="Upload new image"
+    )
+    image_from_repo = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        choices=competence_image_choices(),
+        verbose_name="Select image from repo folder"
     )
 
     def __str__(self):
         return self.title
+
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        elif self.image_from_repo:
+            return os.path.join(settings.MEDIA_URL, self.image_from_repo)
+        return ""
+
+    def clean(self):
+        if not self.image and not self.image_from_repo:
+            raise ValidationError("Please upload an image or select one from the repo folder.")
+        if self.image and self.image_from_repo:
+            raise ValidationError("Please set only one image source: upload or select from repo.")
 
 class Education(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
