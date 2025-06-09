@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'dashboard',
     'cloudinary_storage',
     'cloudinary',
-    'ckeditor',
+    'django_ckeditor_5',
     'rest_framework',
 ]
 
