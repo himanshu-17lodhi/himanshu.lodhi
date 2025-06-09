@@ -203,3 +203,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+
+print("USE_CLOUDINARY:", USE_CLOUDINARY)
+print("DEFAULT_FILE_STORAGE:", DEFAULT_FILE_STORAGE)
