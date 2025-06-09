@@ -1,8 +1,9 @@
-from django.db import models
+import os
 import re
+from django.db import models
+from django.conf import settings
 from django_ckeditor_5.fields import CKEditor5Field
 from django.core.exceptions import ValidationError
-
 
 class Information(models.Model):
     name_complete = models.CharField(max_length=50, blank=True, null=True)
@@ -27,45 +28,42 @@ class Information(models.Model):
 
 def validate_image_file_extension(value):
     valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
-    import os
     ext = os.path.splitext(value.name)[1].lower()
     if ext not in valid_extensions:
         raise ValidationError('Unsupported file extension. Allowed: jpg, jpeg, png, gif, svg.')
 
+def competence_image_choices():
+    """
+    Returns a list of tuples for available images in static/competence/.
+    """
+    static_folder = os.path.join(settings.BASE_DIR, 'static', 'competence')
+    try:
+        files = [
+            (f'competence/{f}', f)
+            for f in os.listdir(static_folder)
+            if os.path.isfile(os.path.join(static_folder, f))
+        ]
+    except FileNotFoundError:
+        files = []
+    return files
 
 class Competence(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
     description = models.TextField(blank=False, null=False)
-    image = models.FileField(
-        upload_to='competence/',
-        blank=True,
-        null=True,
-        validators=[validate_image_file_extension],
-        verbose_name="Upload new image"
-    )
-    image_from_repo = models.CharField(
+    image_from_static = models.CharField(
         max_length=255,
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
         choices=competence_image_choices(),
-        verbose_name="Select image from repo folder"
+        verbose_name="Select image from static/competence/"
     )
 
     def __str__(self):
         return self.title
 
     def get_image_url(self):
-        if self.image:
-            return self.image.url
-        elif self.image_from_repo:
-            return os.path.join(settings.MEDIA_URL, self.image_from_repo)
-        return ""
-
-    def clean(self):
-        if not self.image and not self.image_from_repo:
-            raise ValidationError("Please upload an image or select one from the repo folder.")
-        if self.image and self.image_from_repo:
-            raise ValidationError("Please set only one image source: upload or select from repo.")
+        # Use in templates: {% load static %} <img src="{% static competence.image_from_static %}">
+        return self.image_from_static
 
 class Education(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
@@ -86,7 +84,7 @@ class Experience(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField(max_length=200, blank=True, null=True)
-    description = CKEditor5Field(blank=False, null=False)  # Updated field
+    description = CKEditor5Field(blank=False, null=False)
     image = models.ImageField(upload_to="projects/", blank=False, null=False)
     tools = models.CharField(max_length=200, blank=False, null=False)
     demo = models.URLField()
