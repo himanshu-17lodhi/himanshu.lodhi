@@ -61,9 +61,8 @@ class Competence(models.Model):
     def __str__(self):
         return self.title
 
-    def get_image_url(self):
-        # Use in templates: {% load static %} <img src="{% static competence.image_from_static %}">
-        return self.image_from_static
+    # In your template, use: {% load static %} <img src="{% static competence.image_from_static %}" alt="{{ competence.title }}">
+    # There is no need for a get_image_url method.
 
 class Education(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
