@@ -32,7 +32,7 @@ CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=(ENV == 'production'),
 LOG_LEVEL = config('LOG_LEVEL', default='INFO' if ENV == 'production' else 'DEBUG')
 
 # --- Timezone and Localization ---
-TIME_ZONE = config('TIME_ZONE', default='UTC')
+TIME_ZONE = config('TIME_ZONE', default='Asia/Kolkata')
 LANGUAGE_CODE = config('LANGUAGE_CODE', default='en-us')
 USE_I18N = True
 USE_L10N = True
@@ -160,12 +160,17 @@ if ENV == 'production':
         'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    if config('DATABASE_URL', default=''):
+        DATABASES = {
+            'default': dj_database_url.config(default=config('DATABASE_URL'))
         }
-    }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
 
 # --- Static and Media Files ---
 STATIC_URL = config('STATIC_URL', default='/static/')
@@ -177,7 +182,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# --- Cloudinary Media Storage ---
+# --- Cloudinary Media Storage (use Cloudinary only if USE_CLOUDINARY=True) ---
 USE_CLOUDINARY = config('USE_CLOUDINARY', default=False, cast=bool)
 
 if USE_CLOUDINARY:
@@ -192,7 +197,7 @@ else:
 
 # --- Static files storage ---
 if not DEBUG:
-    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 else:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
@@ -210,6 +215,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# --- Diagnostics ---
+# --- Diagnostics (optional: comment out in production) ---
 print("USE_CLOUDINARY:", USE_CLOUDINARY)
 print("DEFAULT_FILE_STORAGE:", DEFAULT_FILE_STORAGE)
