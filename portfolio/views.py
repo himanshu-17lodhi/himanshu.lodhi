@@ -46,22 +46,19 @@ def homePage(request):
     context = {}
 
     if request.method == 'POST':
-        if request.POST.get('rechaptcha', None):
-            form = MessageForm(request.POST)
-            if form.is_valid():
-                form.save(commit=False)
-                data = {
-                    'name': request.POST['name'],
-                    'email': request.POST['email'],
-                    'message': request.POST['message']
-                }
-                if email_send(data):
-                    form.save()
-
-                return JsonResponse({'success': True})
-            else:
-                return JsonResponse({'success': False, 'errors': form.errors})
-        return JsonResponse({'success': False, 'errors': "Oops, you have to check the recaptcha !"})
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save(commit=False)
+            data = {
+                'name': request.POST['name'],
+                'email': request.POST['email'],
+                'message': request.POST['message']
+            }
+            if email_send(data):
+                form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
 
     if request.method == 'GET':
         form = MessageForm()
@@ -77,7 +74,7 @@ def homePage(request):
             'experiences': experiences,
             'projects': projects,
             'form': form,
-            'recaptcha_key': config("recaptcha_site_key", default="")
+            # 'recaptcha_key': config("recaptcha_site_key", default="")  # Remove this line, not needed anymore
         }
     return render(request, template_name, context)
 
@@ -125,5 +122,3 @@ def handler404(request, exception):
 
 def test404(request):
     return render(request, 'errors/404.html')
-
-
