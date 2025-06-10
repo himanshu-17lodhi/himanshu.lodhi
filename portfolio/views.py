@@ -22,14 +22,23 @@ from info.models import (
 
 def email_send(data):
     old_message = Message.objects.last()
-    if old_message.name == data['name'] and old_message.email == data['email'] and old_message.message == data['message']:
-        return False
-    subject = 'Portfolio : Mail from {}'.format(data['name'])
-    message = '{}\nSender Email: {}'.format(data['message'], data['email'])
+    if old_message:
+        if (
+            old_message.name == data.get('name') and
+            old_message.email == data.get('email') and
+            old_message.message == data.get('message')
+        ):
+            return False
+    subject = f'Portfolio : Mail from {data.get("name")}'
+    message = f'{data.get("message")}\nSender Email: {data.get("email")}'
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [settings.EMAIL_HOST_USER, ]
-    send_mail(subject, message, email_from, recipient_list)
-    return True
+    recipient_list = [settings.EMAIL_HOST_USER]
+    try:
+        send_mail(subject, message, email_from, recipient_list)
+        return True
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return False
 
 
 def homePage(request):
