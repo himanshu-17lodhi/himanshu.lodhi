@@ -7,14 +7,14 @@ from django.core.exceptions import ValidationError
 
 class Information(models.Model):
     name_complete = models.CharField(max_length=50, blank=True, null=True)
-    avatar = models.ImageField(upload_to="avatar/", blank=True, null=True)
+    avatar = models.ImageField(upload_to='uploads/avatar/', blank=True, null=True)
     mini_about = models.TextField(blank=True, null=True)
     about = models.TextField(blank=True, null=True)
     born_date = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
-    cv = models.FileField(upload_to='cv', blank=True, null=True)
+    cv = models.FileField(upload_to='uploads/cv/', blank=True, null=True)
 
     # Social Network
     github = models.URLField(blank=True, null=True)
@@ -71,9 +71,7 @@ class Project(models.Model):
         super(Project, self).save(*args, **kwargs)
 
     def slug_generate(self):
-        slug = self.title.strip()
-        slug = re.sub(" ", "_", slug)
-        return slug.lower()
+        return slugify(self.title)
 
 class Message(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
