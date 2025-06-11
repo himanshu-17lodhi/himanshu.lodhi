@@ -5,6 +5,8 @@ from django.conf import settings
 from django_ckeditor_5.fields import CKEditor5Field
 from django.core.exceptions import ValidationError
 from cloudinary.models import CloudinaryField
+from django.utils.text import slugify
+from django.utils.text import slugify
 
 
 class Information(models.Model):
@@ -73,7 +75,9 @@ class Project(models.Model):
         super(Project, self).save(*args, **kwargs)
 
     def slug_generate(self):
-        return slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.title)
+
 
 class Message(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
