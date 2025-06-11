@@ -4,6 +4,8 @@ from django.db import models
 from django.conf import settings
 from django_ckeditor_5.fields import CKEditor5Field
 from django.core.exceptions import ValidationError
+from cloudinary.models import CloudinaryField
+
 
 class Information(models.Model):
     name_complete = models.CharField(max_length=50, blank=True, null=True)
