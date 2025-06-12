@@ -53,7 +53,8 @@ MIDDLEWARE = [
 ]
 
 # URL Configuration
-ROOT_URLCONF = 'portfolio.urls'
+ROOT_URLCONF = 'app.urls'
+WSGI_APPLICATION = 'app.wsgi.application'
 
 # Templates
 TEMPLATES = [
@@ -74,8 +75,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # Database
 if not DEBUG:
