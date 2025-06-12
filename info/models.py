@@ -11,7 +11,7 @@ from django.utils.text import slugify
 
 class Information(models.Model):
     name_complete = models.CharField(max_length=50, blank=True, null=True)
-    avatar = models.ImageField(upload_to='uploads/avatar/', blank=True, null=True)
+    avatar = CloudinaryField('image',blank=False, null=False)
     mini_about = models.TextField(blank=True, null=True)
     about = models.TextField(blank=True, null=True)
     born_date = models.DateField(blank=True, null=True)
