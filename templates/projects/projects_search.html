@@ -36,15 +36,15 @@
                                     <img class="d-block w-100 p-0" src="{{project.image.url}}">
                                 </div>
                                 <div class="card-body pt-0">
-                                    <p class="display-4 m-0">{{project.title|truncatechars:18}}</p>
-                                    <p class="h-50 text-muted">{{project.description|truncatechars:80}}</p>
+                                    <p class="display-4 m-0">{{ project.title|truncatechars:18 }}</p>
+                                    <p class="h-50 text-muted">{{ project.description|truncatechars:80 }}</p>
 
                                     
                                     <div class="m-0 mt-4">
                                         <span class="font-weight-bold text-success"><i class="ni ni-settings pr-2"></i>Tools:</span>
                                         {% with project.tools|split:"," as tools %}
                                             {% for tool in tools %}
-                                                <span class="badge bg-secondary">{{tool}}</span>
+                                                <span class="badge bg-secondary">{{ tool }}</span>
                                             {% endfor %}
                                         {% endwith %}
                                     </div>
