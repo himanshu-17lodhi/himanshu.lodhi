@@ -1,14 +1,10 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.http import JsonResponse
 from django.core import serializers
-
-import json
 from django.db.models import Q
 from decouple import config
-
 from django.core.mail import send_mail
 from django.conf import settings
-
 from info.forms import MessageForm
 from info.models import (
     Competence,
@@ -18,7 +14,7 @@ from info.models import (
     Information,
     Message
 )
-
+import json
 
 def email_send(data):
     old_message = Message.objects.last()
@@ -39,12 +35,10 @@ def email_send(data):
     except Exception as e:
         print(f"Error sending email: {e}")
         return False
-
-
+        
 def homePage(request):
     template_name = 'homePage.html'
     context = {}
-
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -59,7 +53,6 @@ def homePage(request):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
-
     if request.method == 'GET':
         form = MessageForm()
         competences = Competence.objects.all().order_by('id')
@@ -74,10 +67,8 @@ def homePage(request):
             'experiences': experiences,
             'projects': projects,
             'form': form,
-            # 'recaptcha_key': config("recaptcha_site_key", default="")  # Remove this line, not needed anymore
         }
     return render(request, template_name, context)
-
 
 def projectsPage(request):
     template_name = 'projects/projects_page.html'
@@ -88,14 +79,12 @@ def projectsPage(request):
         }
         return render(request, template_name, context)
 
-
 def projectDetail(request, slug):
     template_name = 'projects/project_detail.html'
     if request.method == 'GET':
         project = get_object_or_404(Project, slug=slug)
         return render(request, template_name, {'project': project})
-
-
+        
 def search(request):
     if request.method == 'POST':
         search_text = request.POST.get('searchText', False)
@@ -115,10 +104,8 @@ def search(request):
                 return JsonResponse({'success': True, 'projects': projects, 'searchText': search_text})
     return JsonResponse({'success': False, 'searchText': search_text})
 
-
 def handler404(request, exception):
     return render(request, 'errors/404.html', status=404)
-
 
 def test404(request):
     return render(request, 'errors/404.html')
