@@ -6,7 +6,6 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.core.exceptions import ValidationError
 from cloudinary.models import CloudinaryField
 from django.utils.text import slugify
-from django.utils.text import slugify
 
 
 class Information(models.Model):
@@ -56,7 +55,7 @@ class Experience(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
-    slug = models.SlugField(max_length=200, blank=True, null=True)
+    slug = models.SlugField(max_length=200, blank=True, null=True, unique=True)
     description = CKEditor5Field(blank=False, null=False)
     image = CloudinaryField('image',blank=False, null=False)
     tools = models.CharField(max_length=200, blank=False, null=False)
@@ -71,12 +70,21 @@ class Project(models.Model):
         return "/projects/{}".format(self.slug)
 
     def save(self, *args, **kwargs):
-        self.slug = self.slug_generate()
+        if not self.slug:
+            self.slug = self.slug_generate()
         super(Project, self).save(*args, **kwargs)
 
     def slug_generate(self):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        base_slug = slugify(self.title)
+        slug = base_slug
+        counter = 1
+        
+        # Ensure unique slug
+        while Project.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+            
+        return slug
 
 
 class Message(models.Model):
