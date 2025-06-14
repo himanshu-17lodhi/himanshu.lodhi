@@ -375,8 +375,8 @@ hr {
     cursor: pointer;
     transition: all .5s;
     border-radius: 10px;
-    margin-top: 10px:
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 .project-image:hover {
     transform: scale(1.05);
@@ -471,7 +471,7 @@ hr {
 .project-card-img img {
     object-fit: cover;
     width: 320px;
-    height: 200px;
+    height: 220px;
     transition: all .5s;
 }
 .project-card-img img:hover {
