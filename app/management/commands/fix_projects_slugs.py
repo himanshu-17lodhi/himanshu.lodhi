@@ -6,17 +6,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         projects = Project.objects.filter(slug__isnull=True) | Project.objects.filter(slug='')
-        
         for project in projects:
             old_slug = project.slug
-            project.slug = None  # Reset to trigger slug generation
+            project.slug = None
             project.save()
             self.stdout.write(
                 self.style.SUCCESS(
                     f'Updated project "{project.title}": {old_slug} -> {project.slug}'
                 )
             )
-        
         self.stdout.write(
             self.style.SUCCESS(f'Successfully updated {projects.count()} projects')
         )
