@@ -1,40 +1,23 @@
-# Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-
-# Django
 db.sqlite3
 *.sqlite3
 *.log
-
-# Environment variables
 .env
-
-# Virtual environment
 venv/
 ENV/
 env/
 .venv/
-
-# Media and static files (optional, if generated/collected)
 media/
 staticfiles/
-
-# VS Code and IDE settings
 .vscode/
 .idea/
-
-# OS files
 .DS_Store
 Thumbs.db
-
-# Python egg info
 *.egg-info/
 .eggs/
-
-# Test/coverage output
 htmlcov/
 .tox/
 .coverage
@@ -44,7 +27,6 @@ nosetests.xml
 coverage.xml
 *.cover
 *.pyc
-
 # Misc
 *.bak
 *.swp
