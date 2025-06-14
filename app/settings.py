@@ -26,6 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+ADDITIONAL_APPS = [
     'app',
     'info',
     'dashboard',
@@ -34,6 +37,8 @@ INSTALLED_APPS = [
     'django_ckeditor_5',
     'rest_framework',
 ]
+
+INSTALLED_APPS += ADDITIONAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
