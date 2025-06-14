@@ -11,6 +11,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 handler404 = handler404
+
 urlpatterns = [
     path(settings.DJANGO_ADMIN_URL, admin.site.urls),
     path('', homePage, name='homePage'),
