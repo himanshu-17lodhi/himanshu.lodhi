@@ -133,26 +133,38 @@ CKEDITOR_5_CONFIGS = {
                 {'language': 'json', 'label': 'JSON'},
             ]
         },
-        'language': 'en',
-        'placeholder': 'Start typing your content here...',
-        'removePlugins': ['Title'], 
+        'style': {
+            'definitions': [
+                {
+                    'name': 'Typing Text Style',
+                    'element': 'span',
+                    'classes': ['typing-text-style'],
+                    'styles': {
+                        'color': '#222222',
+                        'background-color': '#f5f5f5',
+                        'padding': '2px 4px',
+                        'border-radius': '4px',
+                        'font-family': 'monospace'
+                    }
+                }
+            ]
+        },
         'htmlSupport': {
             'allow': [
                 {
-                    'name': /.*/,
+                    'name': '.*',  
                     'attributes': True,
                     'classes': True,
                     'styles': True
                 }
             ]
-        }
+        },
+        'language': 'en',
+        'placeholder': 'Start typing your content here...',
+        'removePlugins': ['Title']
     }
 }
-
-
-
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
