@@ -28,14 +28,14 @@
         <div class="row" id="projectsContainer">
             {% for project in projects %}
                 <div class="col-lg-4 mb-4 ">
-                    <a href="{{project.get_project_absolute_url}}">
+                    <a href="{{ project.get_project_absolute_url }}">
                         <div class="project-card mirror-face">
                                 <div class="project-card-img">
-                                    <img src="{{project.image.url}}">
+                                    <img src="{{ project.image.url }}">
                                 </div>
                             <div class="card-body pt-0">
-                                <h1 class="project-card-title">{{project.title|truncatechars:22}}</h1>
-                                <p class="project-card-disc">{{project.description|truncatechars:100|safe}}</p>
+                                <h1 class="project-card-title">{{ project.title|truncatechars:22 }}</h1>
+                                <p class="project-card-disc">{{ project.description|truncatechars:100|safe }}</p>
                             </div>
                         </div>
                     </a>
