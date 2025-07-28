@@ -22,16 +22,11 @@ Whether you’re a developer, freelancer, or business, this dashboard makes trac
   Instantly review your latest admin activities for transparency.
 
 ---
+### Screenshots
 
-## Demo
+![Homepage]<img width="1919" height="957" alt="Image" src="https://github.com/user-attachments/assets/94884928-0c25-4a78-98f0-3a48d0468fb7" />
 
-Check out a live demo of the admin panel in action!
-
-<img src="https://github.com/user-attachments/assets/823d12e9-038a-4766-9120-859735ea99fa" alt="Admin Panel Screenshot" width="900" height="350">
-
-<img src="https://github.com/user-attachments/assets/823d12e9-038a-4766-9120-859735ea99fa" alt="Admin Panel Screenshot" width="900" height="350">
-<img width="1919" height="961" alt="Image" src="https://github.com/user-attachments/assets/4e230901-c2ae-4830-821f-34a7b8cd3033" />
-<img width="1919" height="957" alt="Image" src="https://github.com/user-attachments/assets/94884928-0c25-4a78-98f0-3a48d0468fb7" />
+1[AdminPae]<img width="1919" height="961" alt="Image" src="https://github.com/user-attachments/assets/4e230901-c2ae-4830-821f-34a7b8cd3033" />
 
 ---
 
