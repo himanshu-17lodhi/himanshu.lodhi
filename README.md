@@ -6,11 +6,7 @@ Whether you’re a developer, freelancer, or business, this dashboard makes trac
 
 ---
 
-
-## Check out Site On
-
-Check out the live application here:  
-[Site](https://himanshu-lodhi.onrender.com/)
+[Click me ](https://himanshu-lodhi.onrender.com/)
 
 ---
 
