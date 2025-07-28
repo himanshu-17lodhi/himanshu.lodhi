@@ -22,11 +22,14 @@ Whether you’re a developer, freelancer, or business, this dashboard makes trac
   Instantly review your latest admin activities for transparency.
 
 ---
+
 ### Screenshots
 
-![Homepage]<img width="1919" height="957" alt="Image" src="https://github.com/user-attachments/assets/94884928-0c25-4a78-98f0-3a48d0468fb7" />
+Homepage  
+<img width="1919" height="957" alt="Homepage" src="https://github.com/user-attachments/assets/94884928-0c25-4a78-98f0-3a48d0468fb7" />
 
-1[AdminPae]<img width="1919" height="961" alt="Image" src="https://github.com/user-attachments/assets/4e230901-c2ae-4830-821f-34a7b8cd3033" />
+Admin Page  
+<img width="1919" height="961" alt="Admin Page" src="https://github.com/user-attachments/assets/4e230901-c2ae-4830-821f-34a7b8cd3033" />
 
 ---
 
@@ -44,14 +47,5 @@ Whether you’re a developer, freelancer, or business, this dashboard makes trac
   - *Projects*: Highlight your work and collaborations.
 - **Recent Actions**
   - Track your latest edits, additions, or removals at a glance.
-
----
-
-## About & Contact
-
-Made by **Himanshu Lodhi**
-
-- GitHub: [himanshu-17lodhi](https://github.com/himanshu-17lodhi)
-- Email: (Add your contact email here)
 
 ---
