@@ -1,6 +1,6 @@
 ## Overview
 
-Welcome to a powerful, modern web application designed to streamline your portfolio management and user administration. Built with Django, styled by Bootstrap, and powered by Supabase (PostgreSQL), this admin panel offers a seamless experience for handling everything from users and groups to your professional history, skills, projects, and more.
+Welcome to a powerful, modern web application designed to streamline portfolio management and user administration. Built with Django, styled by Bootstrap, and powered by Supabase (PostgreSQL), this admin panel offers a seamless experience for handling everything from users and groups to your professional history, skills, projects, and more.
 
 Whether you’re a developer, freelancer, or business, this dashboard makes tracking, updating, and showcasing your portfolio easier than ever.
 
