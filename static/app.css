@@ -455,6 +455,8 @@ hr {
     border: none;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     transition: all .7s;
     padding: 0px;
 }
@@ -473,6 +475,7 @@ hr {
     width: 320px;
     height: 220px;
     transition: all .5s;
+    border-radius: 15px;
 }
 .project-card-img img:hover {
     transform: scale(1.05);
