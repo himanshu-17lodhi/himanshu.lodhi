@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Competence, Education, Experience, Project, Message, Information
+from .models import Competence, Education, Experience, Project, Message, Information, TypingText
 
 @admin.register(Information)
 class InformationAdmin(admin.ModelAdmin):
@@ -24,3 +24,7 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(TypingText)
+class TypingTextAdmin(admin.ModelAdmin):
+    list_display = ('text', 'created_at')

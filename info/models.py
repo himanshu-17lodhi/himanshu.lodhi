@@ -7,6 +7,12 @@ from django.core.exceptions import ValidationError
 from cloudinary.models import CloudinaryField
 from django.utils.text import slugify
 
+class TypingText(models.Model):
+    text = models.CharField(max_length=100, help_text="Text to display in the typing animation")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
 
 class Information(models.Model):
     name_complete = models.CharField(max_length=50, blank=True, null=True)
@@ -19,7 +25,6 @@ class Information(models.Model):
     email = models.EmailField(max_length=255, blank=True, null=True)
     cv = models.FileField(upload_to='uploads/cv/', blank=True, null=True)
 
-    # Social Network
     github = models.URLField(blank=True, null=True)
     linkedin = models.URLField(blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
@@ -78,8 +83,6 @@ class Project(models.Model):
         base_slug = slugify(self.title)
         slug = base_slug
         counter = 1
-        
-        # Ensure unique slug
         while Project.objects.filter(slug=slug).exclude(pk=self.pk).exists():
             slug = f"{base_slug}-{counter}"
             counter += 1
