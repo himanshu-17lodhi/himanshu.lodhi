@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
 from django.http import JsonResponse
 from django.core import serializers
 from django.db.models import Q
 from decouple import config
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
+from django.contrib import messages
 from info.forms import MessageForm
 from info.models import (
     Competence,
@@ -12,62 +13,70 @@ from info.models import (
     Experience,
     Project,
     Information,
-    Message
+    Message,
+    TypingText
 )
+import logging
 import json
 
+
+logger = logging.getLogger(__name__)
+
 def email_send(data):
-    old_message = Message.objects.last()
-    if old_message:
-        if (
-            old_message.name == data.get('name') and
-            old_message.email == data.get('email') and
-            old_message.message == data.get('message')
-        ):
-            return False
-    subject = f'Portfolio : Mail from {data.get("name")}'
-    message = f'{data.get("message")}\nSender Email: {data.get("email")}'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [settings.EMAIL_HOST_USER]
+    email = EmailMessage(
+        subject=f'Portfolio : Mail from {data.get("name")}',
+        body=data.get("message"),
+        from_email=settings.EMAIL_HOST_USER,
+        to=[settings.EMAIL_HOST_USER],
+        reply_to=[data.get("email")],
+    )
     try:
-        send_mail(subject, message, email_from, recipient_list)
+        email.send()
         return True
     except Exception as e:
-        print(f"Error sending email: {e}")
+        logger.error(f"Email error: {e}")
         return False
-        
+
 def homePage(request):
     template_name = 'homePage.html'
-    context = {}
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)
             data = {
-                'name': request.POST['name'],
-                'email': request.POST['email'],
-                'message': request.POST['message']
+                'name': form.cleaned_data['name'],
+                'email': form.cleaned_data['email'],
+                'message': form.cleaned_data['message']
             }
             if email_send(data):
                 form.save()
-            return JsonResponse({'success': True})
+                messages.success(request, "Your message has been sent successfully!")
+            else:
+                form.save()
+                messages.warning(request, "Message saved, but there was an issue sending the email notification.")
+            
+            return redirect('/#message-me')
         else:
-            return JsonResponse({'success': False, 'errors': form.errors})
-    if request.method == 'GET':
-        form = MessageForm()
-        competences = Competence.objects.all().order_by('id')
-        education = Education.objects.all().order_by('-id')
-        experiences = Experience.objects.all().order_by('-id')
-        projects = Project.objects.filter(show_in_slider=True).order_by('-id')
-        info = Information.objects.first()
-        context = {
-            'info': info,
-            'competences': competences,
-            'education': education,
-            'experiences': experiences,
-            'projects': projects,
-            'form': form,
-        }
+            messages.error(request, "Please correct the errors in the form.")
+            return redirect('/#message-me')
+
+    form = MessageForm()
+    competences = Competence.objects.all().order_by('id')
+    education = Education.objects.all().order_by('-id')
+    experiences = Experience.objects.all().order_by('-id')
+    projects = Project.objects.filter(show_in_slider=True).order_by('-id')
+    info = Information.objects.first()
+    typing_words = list(TypingText.objects.values_list('text', flat=True))
+
+    context = {
+        'info': info,
+        'typing_words': typing_words,
+        'competences': competences,
+        'education': education,
+        'experiences': experiences,
+        'projects': projects,
+        'form': form,
+    }
+    
     return render(request, template_name, context)
 
 def projectsPage(request):
