@@ -2,7 +2,7 @@
 
 {% load static %}
 {% block style %}
-    <link type="text/css" href="{% static 'dashboard.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'css/dashboard.css' %}" rel="stylesheet">
 {% endblock style %}
 
 {% block body %}
@@ -13,7 +13,8 @@
             <a href="{% url 'dashboard:dashboard' %}">
                 <div class="row info {% if dashboard %}dashboard-active {% else %}info-unactive{% endif %}">
                     <div class="col-2 pic">
-                        <div class="profile-pic shadow" style="background-image: url('{% if profile.avatar %}{{profile.avatar.url}}{% else %}{% static 'img/default-avatar.svg' %}{% endif %}')">
+                        <div class="profile-pic shadow"
+                            style="background-image: url('{% if profile.avatar %}{{profile.avatar.url}}{% else %}{% static 'img/default-avatar.svg' %}{% endif %}');">
                         </div>
                     </div>
                     <div class="col-10 name">
@@ -21,7 +22,7 @@
                         <p class="email">{{profile.email}}</p>
                     </div>
                 </div>
-            <a/>
+            </a>
             <hr class="m-0 mb-1">
             <ul class="sidebar-list">
                 <a href="{% url 'dashboard:profile' %}">
@@ -82,19 +83,19 @@
         </div>
         <div class="col-lg-8 dashboard-content pl-lg-4">
             {% block dashboardContent %}
-                <div class="dashboard-title">Dashboard</div>
-                <div class=""><small>Welcome Again</small></div>
-                <div class="row">
-                    <div class="col-12 card">
+            <div class="dashboard-title">Dashboard</div>
+            <div class=""><small>Welcome Again</small></div>
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="">
                         <div class="">
                             <div class="">
-                                <div class="">
-                                    Welcome Again
-                                </div>
+                                Welcome Again
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
             {% endblock dashboardContent %}
         </div>
@@ -103,12 +104,13 @@
 <div class="container dash-footer my-6 py-2">
     <div class="text-center">
         <p>Copyright © {% now "Y" %} Himanshu Lodhi . All rights reserved</p>
-        <p class="coder">Built with <i class="fa fa-heart text-danger"></i> in Django By <a href="https://github.com/himanshu-17lodhi">Himanshu Lodhi</a></p>
+        <p class="coder">Built with <i class="fa fa-heart text-danger"></i> in Django By <a
+                href="https://github.com/himanshu-17lodhi">Himanshu Lodhi</a></p>
     </div>
 </div>
 
 {% endblock body %}
-                
+
 {% block script %}
-    <script src="{% static 'dashboard.js' %}"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock script %}
