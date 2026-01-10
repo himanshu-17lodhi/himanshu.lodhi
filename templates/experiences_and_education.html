@@ -2,9 +2,9 @@
     <div class="col-lg-6 mt-2" id="education">
         <h1 class="display-4 title"><i class="ni ni-hat-3"></i> Education</h1>
         {% for education in education %}
-            <div class="container py-2">
-                <div class="row">
-                    <div class="col py-2">
+        <div class="container py-2">
+            <div class="row">
+                <div class="col py-2">
                     <div class="card education-card mirror-face">
                         <div class="card-body">
                             <h6 class="education-card-title">{{education.title}}</h6>
@@ -12,18 +12,19 @@
                             <p class="education-card-desc">{{education.description}}</p>
                         </div>
                     </div>
-                    </div>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
+
 
     <div class="col-lg-6 mt-2" id="experiences">
         <h1 class="display-4 title"><i class="ni ni-archive-2"></i> Experiences</h1>
         {% for experience in experiences %}
-            <div class="container py-2">
-                <div class="row">
-                    <div class="col py-2">
+        <div class="container py-2">
+            <div class="row">
+                <div class="col py-2">
                     <div class="card education-card mirror-face">
                         <div class="card-body">
                             <h6 class="education-card-title">{{experience.title}}</h6>
@@ -31,10 +32,10 @@
                             <p class="education-card-desc">{{experience.description}}</p>
                         </div>
                     </div>
-                    </div>
                 </div>
-            </div>  
+            </div>
+        </div>
         {% endfor %}
     </div>
-    
+
 </div>

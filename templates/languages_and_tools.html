@@ -2,13 +2,14 @@
 <div class="row mt-5">
     <div class="col-lg-12">
         <h1 class="display-4 title mb-0" id="competences">
-            <i class="ni ni-atom"></i> 
+            <i class="ni ni-atom"></i>
             Competences
         </h1>
         <small class="s-color">Programming Languages and Tools</small>
         <div class="row">
-        {% for competence in competences %}
-            <div class="col-lg-2 col-sm-6 col-6 justify-content-center mt-3" data-toggle="modal" data-target=".competance-model-{{competence.id}}">
+            {% for competence in competences %}
+            <div class="col-lg-2 col-sm-6 col-6 justify-content-center mt-3" data-toggle="modal"
+                data-target=".competance-model-{{competence.id}}">
                 <div class="competence-card text-center mirror-face">
                     <div class="card-body">
                         <img class="competence-img" alt="{{ competence.title }} logo" src="{{ competence.image.url }}">
@@ -16,7 +17,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade competance-model-{{competence.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal fade competance-model-{{competence.id}}" tabindex="-1" role="dialog"
+                aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content competence-modal mirror-face mt-8">
                         <div class="modal-header">
@@ -26,12 +28,12 @@
                             </a>
                         </div>
                         <div class="modal-body">
-                            <p>{{ competence.description }}</p>
+                            <p>{{ competence.description|safe }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
         </div>
     </div>
 </div>

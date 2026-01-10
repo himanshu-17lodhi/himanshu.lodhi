@@ -1,4 +1,5 @@
 <div class="row mt-lg-6 justify-content-center">
+
     <div class="col-lg-6 mx-lg-0 mx-2 about mirror-face">
         <div class="text-white p-2">
             <div id="about-me">
@@ -35,6 +36,53 @@
             </div>
         </div>
     </div>
+
+
+    <div class="col-lg-6 pl-lg-4 mt-lg-0 mt-6 contact" id="message-me">
+        <h2>Interested to work together? <span>Let's talk</span></h2>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <form class="form" id="form" method="POST" action="{% url 'homePage' %}#message-me">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input name="name" id="form-name" type="text" placeholder="Your Name" class="form-control input"
+                            required autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input name="email" id="form-email" type="email" class="form-control input"
+                            placeholder="Your E-Mail" required autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <textarea name="message" id="form-message" class="form-control input" rows="7"
+                    placeholder="Your Message here ..." required autocomplete="off"></textarea>
+            </div>
+
+            <button type="submit" style="background: none; border: none; padding: 0; width: 100%;">
+                <div class="send-message" style="cursor: pointer;">
+                    Send <i class="fas fa-paper-plane"></i>
+                </div>
+            </button>
+        </form>
+    </div>
+
+
+    <!--
     <div class="col-lg-6 pl-lg-4 mt-lg-0 mt-6 contact" id="message-me">
         <h2>Interested to work together? <span>Let's talk</span></h2>
         <form class="form" id="form">
@@ -42,19 +90,22 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input name="name" id="form-name" type="text" placeholder="Your Name" class="form-control input" autocomplete="off"/>
+                        <input name="name" id="form-name" type="text" placeholder="Your Name" class="form-control input"
+                            autocomplete="off" />
                         <div id="name-error"></div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input name="email" id="form-email" type="email" class="form-control input" placeholder="Your E-Mail" autocomplete="off">
+                        <input name="email" id="form-email" type="email" class="form-control input"
+                            placeholder="Your E-Mail" autocomplete="off">
                         <div id="email-error"></div>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <textarea name="message" id="form-message" class="form-control input" rows="7" placeholder="Your Message here ..." autocomplete="off"></textarea>
+                <textarea name="message" id="form-message" class="form-control input" rows="7"
+                    placeholder="Your Message here ..." autocomplete="off"></textarea>
                 <div id="message-error"></div>
             </div>
             <a id="form-submit">
@@ -63,9 +114,10 @@
                 </div>
             </a>
         </form>
-        <!-- Small modal -->
-        <button style="display:none;" type="button" id="modal-toggle" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button>
-        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <button style="display:none;" type="button" id="modal-toggle" data-toggle="modal"
+            data-target=".bd-example-modal-sm">Small modal</button>
+        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-sm pt-8">
                 <div class="modal-content text-success p-3 text-center send-success">
                     <i class="fa fa-check-circle fa-3x"></i>
@@ -74,4 +126,6 @@
             </div>
         </div>
     </div>
+-->
+
 </div>
