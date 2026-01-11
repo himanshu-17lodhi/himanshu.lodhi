@@ -23,8 +23,13 @@ class Information(models.Model):
     address = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
-    cv = models.FileField(upload_to='uploads/cv/', blank=True, null=True)
-
+    #cv = models.FileField(upload_to='uploads/cv/', blank=True, null=True)
+    cv = models.FileField(
+        upload_to='cv/', 
+        storage=RawMediaCloudinaryStorage(), 
+        blank=True, 
+        null=True
+    )
     github = models.URLField(blank=True, null=True)
     linkedin = models.URLField(blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
