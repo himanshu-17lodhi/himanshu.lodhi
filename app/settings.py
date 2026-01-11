@@ -1,5 +1,5 @@
 import os
-from decouple import config
+from decouple import config, Csv
 from pathlib import Path
 import dj_database_url
 import cloudinary
