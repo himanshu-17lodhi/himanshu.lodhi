@@ -64,7 +64,7 @@ class Project(models.Model):
     description = CKEditor5Field(blank=False, null=False)
     image = CloudinaryField('image',blank=False, null=False)
     tools = models.CharField(max_length=200, blank=False, null=False)
-    demo = models.URLField(blank=True, null=True)
+    demo = models.URLField(max_length=500, null=True, blank=True)
     github = models.URLField()
     show_in_slider = models.BooleanField(default=False)
 
