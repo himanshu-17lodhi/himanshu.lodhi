@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-if not DEBUG:
+# if not DEBUG:
     # PRODUCTION: Use Supabase
     DATABASE_URL = os.environ.get('DATABASE_URL')
     if DATABASE_URL:
@@ -88,7 +88,6 @@ if not DEBUG:
         }
         DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
     else:
-        # Fallback if URL is missing in Production to prevent crash
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
@@ -96,7 +95,6 @@ if not DEBUG:
             }
         }
 else:
-    # DEVELOPMENT: Always use SQLite (Docker or Non-Docker)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
