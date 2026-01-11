@@ -5,6 +5,7 @@ from django.conf import settings
 from django_ckeditor_5.fields import CKEditor5Field
 from django.core.exceptions import ValidationError
 from cloudinary.models import CloudinaryField
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 from django.utils.text import slugify
 
 class TypingText(models.Model):
