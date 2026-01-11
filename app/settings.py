@@ -77,24 +77,22 @@ TEMPLATES = [
 
 # if not DEBUG:
     # PRODUCTION: Use Supabase
-    DATABASE_URL = os.environ.get('DATABASE_URL')
-    if DATABASE_URL:
-        DATABASES = {
-            'default': dj_database_url.config(
-                default=DATABASE_URL,
-                conn_max_age=600,
-                conn_health_checks=True,
-            )
-        }
-        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
-    else:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
+    #DATABASE_URL = os.environ.get('DATABASE_URL')
+# Ensure there are ZERO spaces before DATABASE_URL
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    # This block should be indented by 4 spaces
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+    DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
 else:
+    # This block should also be indented by 4 spaces
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
