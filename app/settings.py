@@ -100,10 +100,17 @@ else:
         }
     }
     
-cloudinary.config( 
-    cloud_name = config("CLOUDINARY_CLOUD_NAME", default="dummy_name"), 
-    api_key = config("CLOUDINARY_API_KEY", default="dummy_key"), 
-    api_secret = config("CLOUDINARY_API_SECRET", default="dummy_secret") 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default='build_dummy'),
+    'API_KEY': config('CLOUDINARY_API_KEY', default='build_dummy'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET', default='build_dummy'),
+}
+
+cloudinary.config(
+    cloud_name = CLOUDINARY_STORAGE['CLOUD_NAME'],
+    api_key = CLOUDINARY_STORAGE['API_KEY'],
+    api_secret = CLOUDINARY_STORAGE['API_SECRET'],
+    secure = True
 )
 
 CKEDITOR_5_CONFIGS = {
