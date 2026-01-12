@@ -9,7 +9,7 @@
                         <div class="card-body">
                             <h6 class="education-card-title">{{education.title}}</h6>
                             <small>{{education.the_year}}</small>
-                            <p class="education-card-desc">{{education.description}}</p>
+                            <div class="education-card-desc">{{education.description | safe}}</div>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <h6 class="education-card-title">{{experience.title}}</h6>
                             <small>{{experience.the_year}}</small>
-                            <p class="education-card-desc">{{experience.description}}</p>
+                            <div class="education-card-desc">{{experience.description | safe}}</div>
                         </div>
                     </div>
                 </div>

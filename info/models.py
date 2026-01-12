@@ -19,7 +19,7 @@ class Information(models.Model):
     name_complete = models.CharField(max_length=50, blank=True, null=True)
     avatar = CloudinaryField('image',blank=False, null=False)
     mini_about = models.TextField(blank=True, null=True)
-    about = models.TextField(blank=True, null=True)
+    about = CKEditor5Field(blank=True, null=True)
     born_date = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
@@ -50,7 +50,7 @@ class Competence(models.Model):
 
 class Education(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
-    description = models.TextField(blank=False, null=False)
+    description = CKEditor5Field(blank=False, null=False)
     the_year = models.CharField(max_length=50, blank=False, null=False)
 
     def __str__(self):
@@ -58,7 +58,7 @@ class Education(models.Model):
 
 class Experience(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
-    description = models.TextField(blank=False, null=False)
+    description = CKEditor5Field(blank=False, null=False)
     the_year = models.CharField(max_length=50, blank=False, null=False)
 
     def __str__(self):

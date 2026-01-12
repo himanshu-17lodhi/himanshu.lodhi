@@ -76,13 +76,10 @@ TEMPLATES = [
 ]
 
 # if not DEBUG:
-    # PRODUCTION: Use Supabase
     #DATABASE_URL = os.environ.get('DATABASE_URL')
-# Ensure there are ZERO spaces before DATABASE_URL
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
-    # This block should be indented by 4 spaces
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
@@ -92,7 +89,7 @@ if DATABASE_URL:
     }
     DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
 else:
-    # This block should also be indented by 4 spaces
+    
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -192,9 +189,8 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-# Update these lines in settings.py
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # os.path still works with Path objects
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build')
 
 MEDIA_URL = '/media/'
