@@ -1,2 +1,3 @@
-pip install -r requirements.txt
+#!/bin/sh
+
 python manage.py collectstatic --noinput --clear
